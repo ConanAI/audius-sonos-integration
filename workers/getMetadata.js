@@ -22,43 +22,6 @@ const defaultConfig = {
     ],
   },
 };
-const newTrackConfig = {
-  getMetadataResult: {
-    index: 0,
-    count: 2,
-    total: 2,
-    mediaMetadata: [
-      {
-        id: "NewTrack1",
-        title: "NewTrack1",
-        mimeType: "audio/mpeg",
-        itemType: "track",
-        trackMetadata: {
-          albumId: "1",
-          duration: 234,
-          artistId: "artist1",
-          artist: "Chris Brown",
-          albumArtURI:
-            "https://creatornode.audius.co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/150x150.jpg",
-        },
-      },
-      {
-        id: "NewTrack1",
-        title: "NewTrack2",
-        mimeType: "audio/mpeg",
-        itemType: "track",
-        trackMetadata: {
-          albumId: "1",
-          duration: 232,
-          artistId: "artist1",
-          artist: "Chris Brown",
-          albumArtURI:
-            "https://creatornode.audius.co/ipfs/QmVJjA6zXhDZn3BjcjYa33P9NDiPZj7Vyq9TCx1bHjvHmG/150x150.jpg",
-        },
-      },
-    ],
-  },
-};
 
 async function userSearch(id) {
   // get tracks
@@ -100,11 +63,7 @@ async function runMeta(args, callback) {
     callback(defaultConfig);
     return;
   }
-
-  if (id === "new") {
-    return newTrackConfig;
-  }
-
+  // resolve trending
   if (id === "trending") {
     const tracks = await axios.get("tracks/trending?app_name=Sonos+Bridge");
     const data = tracks.data["data"].slice(0, limit);
@@ -135,12 +94,14 @@ async function runMeta(args, callback) {
     };
     callback(returnConstructor);
   }
+  // resolve artist metadata
   if (id.includes("ar:")) {
     const resp = await userSearch(id.replace("ar:", ""));
     callback(resp);
   }
 }
 
+// gets extended media metadata
 async function runMediaMeta(args, callback) {
   const trackId = args.id.replace("tr:", "");
   const track = await axios.get(`tracks/${trackId}?app_name=Sonos+Bridge`);
