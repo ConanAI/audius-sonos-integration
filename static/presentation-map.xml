@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Presentation>
+    <PresentationMap type="Search">
+        <Match>
+            <SearchCategories>
+                <Category mappedId="artist" id="artists"/>
+                <Category mappedId="track" id="tracks"/>
+                <Category mappedId="playlist" id="playlists"/>
+            </SearchCategories>
+        </Match>
+    </PresentationMap>
+</Presentation>
